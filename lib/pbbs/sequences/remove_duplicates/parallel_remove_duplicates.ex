@@ -3,19 +3,21 @@ defmodule PBBS.Sequences.RemoveDuplicates.Parallel do
     :ets.new(:ddup, [:public, :named_table])
     :ets.insert(:ddup, {:data, nums})
 
-    ret=(0..p-1)
-    |> Enum.map(fn i ->
-      Task.async(fn ->
-        input = Keyword.get(:ets.lookup(:ddup, :data), :data)
-        Enum.drop(input, i)
-        |> Enum.take_every(p)
-        |> MapSet.new
+    ret =
+      0..(p - 1)
+      |> Enum.map(fn i ->
+        Task.async(fn ->
+          input = Keyword.get(:ets.lookup(:ddup, :data), :data)
+
+          Enum.drop(input, i)
+          |> Enum.take_every(p)
+          |> MapSet.new()
+        end)
       end)
-    end)
-    |> Task.await_many
-    |> Enum.reduce(MapSet.new(), fn (res, acc) ->
-      MapSet.union(res, acc)
-    end)
+      |> Task.await_many()
+      |> Enum.reduce(MapSet.new(), fn res, acc ->
+        MapSet.union(res, acc)
+      end)
 
     :ets.delete(:ddup)
 

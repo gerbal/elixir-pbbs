@@ -6,13 +6,26 @@ defmodule Utils.Benchmark.Drivers.ConvexHull do
 
     p = System.schedulers_online()
 
-    impl_map = Map.new()
-    |> Map.put("serial;uniform", fn () -> PBBS.Geometry.ConvexHull.Sequential.convex_hull(uniform) end)
-    |> Map.put("serial;kuzmin", fn () -> PBBS.Geometry.ConvexHull.Sequential.convex_hull(kuzmin) end)
-    |> Map.put("serial;perimeter", fn () -> PBBS.Geometry.ConvexHull.Sequential.convex_hull(perimeter) end)
-    |> Map.put("parallel;p=#{p};uniform", fn () -> PBBS.Geometry.ConvexHull.Parallel.convex_hull(uniform) end)
-    |> Map.put("parallel;p=#{p};kuzmin", fn () -> PBBS.Geometry.ConvexHull.Parallel.convex_hull(kuzmin) end)
-    |> Map.put("parallel;p=#{p};perimeter", fn () -> PBBS.Geometry.ConvexHull.Parallel.convex_hull(perimeter) end)
+    impl_map =
+      Map.new()
+      |> Map.put("serial;uniform", fn ->
+        PBBS.Geometry.ConvexHull.Sequential.convex_hull(uniform)
+      end)
+      |> Map.put("serial;kuzmin", fn ->
+        PBBS.Geometry.ConvexHull.Sequential.convex_hull(kuzmin)
+      end)
+      |> Map.put("serial;perimeter", fn ->
+        PBBS.Geometry.ConvexHull.Sequential.convex_hull(perimeter)
+      end)
+      |> Map.put("parallel;p=#{p};uniform", fn ->
+        PBBS.Geometry.ConvexHull.Parallel.convex_hull(uniform)
+      end)
+      |> Map.put("parallel;p=#{p};kuzmin", fn ->
+        PBBS.Geometry.ConvexHull.Parallel.convex_hull(kuzmin)
+      end)
+      |> Map.put("parallel;p=#{p};perimeter", fn ->
+        PBBS.Geometry.ConvexHull.Parallel.convex_hull(perimeter)
+      end)
 
     Benchee.run(
       impl_map,
@@ -29,11 +42,11 @@ defmodule Utils.Benchmark.Drivers.ConvexHull do
     |> Enum.drop(1)
     |> Enum.filter(fn line -> String.trim(line) != "" end)
     |> Enum.map(fn line ->
-      [x,y] = String.split(line)
-      |> Enum.map(&String.to_float/1)
+      [x, y] =
+        String.split(line)
+        |> Enum.map(&String.to_float/1)
 
       {x, y}
     end)
   end
-
 end

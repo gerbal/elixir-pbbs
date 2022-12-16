@@ -1,7 +1,6 @@
 # Description: https://www.cs.cmu.edu/~pbbs/benchmarks/integerSort.html
 
 defmodule PBBS.Sequences.IntegerSort.Parallel do
-
   def radix_sort(list, p) do
     max = abs(Enum.max(list))
     max_length = digits(max)
@@ -60,5 +59,4 @@ defmodule PBBS.Sequences.IntegerSort.Parallel do
       1
     end
   end
-
 end

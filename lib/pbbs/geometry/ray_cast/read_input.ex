@@ -35,7 +35,7 @@ defmodule PBBS.Geometry.RayCast.ReadInput do
       |> Enum.filter(fn line -> String.trim(line) != "" end)
 
     Enum.chunk_every(lines, 2)
-    |> Enum.map(fn ([from_line, to_line]) ->
+    |> Enum.map(fn [from_line, to_line] ->
       %PBBS.Geometry.Common.Ray{
         from: create_point_from_line(from_line),
         to: create_point_from_line(to_line)

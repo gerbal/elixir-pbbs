@@ -1,16 +1,18 @@
 defmodule PBBS.Geometry.RayCast.Sequential do
   alias PBBS.Geometry.Common.Vec3
+
   def ray_cast(triangles, rays) do
     indexed_triangles = Enum.with_index(triangles)
 
-    result = Enum.map(rays, fn ray ->
-      Enum.map(indexed_triangles, fn ({triangle, index}) ->
-        {ray_triangle_intersect(ray, triangle), index}
+    result =
+      Enum.map(rays, fn ray ->
+        Enum.map(indexed_triangles, fn {triangle, index} ->
+          {ray_triangle_intersect(ray, triangle), index}
+        end)
+        |> Enum.filter(fn {{intersects, _distance}, _index} -> intersects end)
+        |> Enum.min_by(fn {{_intersects, distance}, _index} -> distance end, fn -> -1 end)
+        |> take_index
       end)
-      |> Enum.filter(fn ({{intersects, _distance}, _index}) -> intersects end)
-      |> Enum.min_by(fn ({{_intersects, distance}, _index}) -> distance end, fn -> -1 end)
-      |> take_index
-    end)
 
     result
   end
@@ -38,6 +40,7 @@ defmodule PBBS.Geometry.RayCast.Sequential do
       inv_det = 1 / det
       t_vec = Vec3.sub(ray.from, Enum.at(triangle.points, 0))
       u = Vec3.dot_product(t_vec, pvec) * inv_det
+
       if u < 0 or u > 1 do
         {false, nil}
       else

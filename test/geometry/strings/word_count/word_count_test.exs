@@ -27,6 +27,8 @@ defmodule WordCountTest do
 
   test "works on large file" do
     {:ok, input} = File.read("data/inputs/word_count/text.txt")
-    assert PBBS.Strings.WordCount.Parallel.word_count(input, 6) == PBBS.Strings.WordCount.Sequential.word_count(input)
+
+    assert PBBS.Strings.WordCount.Parallel.word_count(input, 6) ==
+             PBBS.Strings.WordCount.Sequential.word_count(input)
   end
 end

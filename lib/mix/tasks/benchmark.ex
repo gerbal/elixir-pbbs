@@ -12,11 +12,16 @@ defmodule Mix.Tasks.Benchmark do
 
   @impl Mix.Task
   def run(args) do
-    parsed_args = OptionParser.parse(args, aliases: [
-      a: :algorithm,
-    ], strict: [
-      algorithm: :string,
-    ])
+    parsed_args =
+      OptionParser.parse(args,
+        aliases: [
+          a: :algorithm
+        ],
+        strict: [
+          algorithm: :string
+        ]
+      )
+
     parsed = elem(parsed_args, 0)
 
     algorithm = Keyword.get(parsed, :algorithm)
@@ -37,10 +42,11 @@ defmodule Mix.Tasks.Benchmark do
       "convex_hull" => &Utils.Benchmark.Drivers.ConvexHull.run_benchmark/0,
       "suffix_array" => &Utils.Benchmark.Drivers.SuffixArray.run_benchmark/0,
       "integer_sort" => &Utils.Benchmark.Drivers.IntegerSort.run_benchmark/0,
-      "comparison_sort" => &Utils.Benchmark.Drivers.ComparisonSort.run_benchmark/0,
+      "comparison_sort" => &Utils.Benchmark.Drivers.ComparisonSort.run_benchmark/0
     }
 
     driver = drivers[algorithm]
+
     if driver != nil do
       driver.()
     else

@@ -1,5 +1,4 @@
 defmodule Utils.Benchmark.Drivers.Histogram do
-
   def run_benchmark() do
     dense_buckets = 1000
     dense_list = Utils.Generators.random_sequence(dense_buckets, 1_000_000)
@@ -9,15 +8,22 @@ defmodule Utils.Benchmark.Drivers.Histogram do
 
     plist = [2, 4, 6, 12, 24, 32, 40]
 
-    impl_map = Enum.flat_map(plist, fn p ->
-      [
-        {"parallel;p=#{p};sparse_list", fn () -> PBBS.Sequences.Histogram.Parallel.histogram(sparse_list, sparse_buckets, p) end},
-        {"parallel;p=#{p};dense_list", fn () -> PBBS.Sequences.Histogram.Parallel.histogram(dense_list, dense_buckets, p) end},
-      ]
-    end)
-    |> Map.new()
-    |> Map.put("serial;sparse_list", fn () -> PBBS.Sequences.Histogram.Sequential.histogram(sparse_list, sparse_buckets) end)
-    |> Map.put("serial;dense_list", fn () -> PBBS.Sequences.Histogram.Sequential.histogram(dense_list, dense_buckets) end)
+    impl_map =
+      Enum.flat_map(plist, fn p ->
+        [
+          {"parallel;p=#{p};sparse_list",
+           fn -> PBBS.Sequences.Histogram.Parallel.histogram(sparse_list, sparse_buckets, p) end},
+          {"parallel;p=#{p};dense_list",
+           fn -> PBBS.Sequences.Histogram.Parallel.histogram(dense_list, dense_buckets, p) end}
+        ]
+      end)
+      |> Map.new()
+      |> Map.put("serial;sparse_list", fn ->
+        PBBS.Sequences.Histogram.Sequential.histogram(sparse_list, sparse_buckets)
+      end)
+      |> Map.put("serial;dense_list", fn ->
+        PBBS.Sequences.Histogram.Sequential.histogram(dense_list, dense_buckets)
+      end)
 
     Benchee.run(
       impl_map,
