@@ -8,7 +8,8 @@ defmodule PBBS.MixProject do
       elixir: "~> 1.12",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      escript: escript()
+      escript: escript(),
+      aliases: aliases()
     ]
   end
 
@@ -32,5 +33,20 @@ defmodule PBBS.MixProject do
 
   defp escript do
     [main_module: PBBS]
+  end
+
+  defp aliases do
+    [
+      "benchmark.all": [
+        "benchmark -a histogram",
+        "benchmark -a remove_duplicates",
+        "benchmark -a word_count",
+        "benchmark -a ray_cast",
+        "benchmark -a convex_hull",
+        "benchmark -a suffix_array",
+        "benchmark -a integer_sort",
+        "benchmark -a comparison_sort"
+      ]
+    ]
   end
 end
