@@ -9,7 +9,7 @@ defmodule PBBS.Strings.WordCount.Parallel do
         Task.async(fn ->
           input = Keyword.get(:ets.lookup(:wc, :data), :data)
 
-          String.split(input, ~r/[^A-z]+/)
+          String.split(input, ~r/[^A-Za-z]+/)
           |> Enum.map(&String.downcase/1)
           |> Enum.drop(i)
           |> Enum.take_every(p)
