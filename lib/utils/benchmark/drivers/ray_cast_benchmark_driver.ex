@@ -1,5 +1,5 @@
 defmodule Utils.Benchmark.Drivers.RayCast do
-  def run_benchmark() do
+  def run_benchmark(time \\ 60) do
     {triangles, rays} =
       PBBS.Geometry.RayCast.ReadInput.read_input(
         "data/inputs/ray_cast/triangles2k",
@@ -22,7 +22,7 @@ defmodule Utils.Benchmark.Drivers.RayCast do
 
     Benchee.run(
       impl_map,
-      time: 60,
+      time: time,
       formatters: [
         {Benchee.Formatters.CSV, file: "output_ray_cast.csv"}
       ]

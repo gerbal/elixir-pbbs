@@ -1,5 +1,5 @@
 defmodule Utils.Benchmark.Drivers.Histogram do
-  def run_benchmark() do
+  def run_benchmark(time \\ 60) do
     dense_buckets = 1000
     dense_list = Utils.Generators.random_sequence(dense_buckets, 1_000_000)
 
@@ -27,7 +27,7 @@ defmodule Utils.Benchmark.Drivers.Histogram do
 
     Benchee.run(
       impl_map,
-      time: 60,
+      time: time,
       formatters: [
         {Benchee.Formatters.CSV, file: "output_histogram.csv"}
       ]

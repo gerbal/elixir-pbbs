@@ -1,5 +1,5 @@
 defmodule Utils.Benchmark.Drivers.ComparisonSort do
-  def run_benchmark() do
+  def run_benchmark(time \\ 60) do
     dense_list = Utils.Generators.random_sequence(50, 1_000_000)
     sparse_list = Utils.Generators.random_sequence(1_000_000)
 
@@ -19,7 +19,7 @@ defmodule Utils.Benchmark.Drivers.ComparisonSort do
 
     Benchee.run(
       impl_map,
-      time: 60,
+      time: time,
       formatters: [
         {Benchee.Formatters.CSV, file: "output_comparison_sort.csv"}
       ]

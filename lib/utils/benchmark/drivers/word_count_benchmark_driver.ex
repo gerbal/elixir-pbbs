@@ -1,5 +1,5 @@
 defmodule Utils.Benchmark.Drivers.WordCount do
-  def run_benchmark() do
+  def run_benchmark(time \\ 60) do
     {:ok, natural_text} = File.read("data/inputs/word_count/text.txt")
     {:ok, dense_text} = File.read("data/inputs/word_count/dense_text.txt")
 
@@ -24,7 +24,7 @@ defmodule Utils.Benchmark.Drivers.WordCount do
 
     Benchee.run(
       impl_map,
-      time: 60,
+      time: time,
       formatters: [
         {Benchee.Formatters.CSV, file: "output_wc.csv"}
       ]

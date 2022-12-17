@@ -37,16 +37,6 @@ defmodule PBBS.MixProject do
 
   defp aliases do
     [
-      "benchmark.all": [
-        "benchmark -a histogram",
-        "benchmark -a remove_duplicates",
-        "benchmark -a word_count",
-        "benchmark -a ray_cast",
-        "benchmark -a convex_hull",
-        "benchmark -a suffix_array",
-        "benchmark -a integer_sort",
-        "benchmark -a comparison_sort"
-      ]
     ]
   end
 end

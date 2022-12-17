@@ -1,5 +1,5 @@
 defmodule Utils.Benchmark.Drivers.ConvexHull do
-  def run_benchmark() do
+  def run_benchmark(time \\ 60) do
     uniform = read_points("data/inputs/convex_hull/uniform.txt")
     kuzmin = read_points("data/inputs/convex_hull/kuzmin.txt")
     perimeter = read_points("data/inputs/convex_hull/perimeter.txt")
@@ -29,7 +29,7 @@ defmodule Utils.Benchmark.Drivers.ConvexHull do
 
     Benchee.run(
       impl_map,
-      time: 60,
+      time: time,
       formatters: [
         {Benchee.Formatters.CSV, file: "output_convex_hull.csv"}
       ]

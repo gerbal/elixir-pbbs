@@ -1,5 +1,5 @@
 defmodule Utils.Benchmark.Drivers.SuffixArray do
-  def run_benchmark() do
+  def run_benchmark(time \\ 60) do
     {:ok, trigrams} = File.read("data/inputs/suffix_array/trigrams")
     {:ok, dna} = File.read("data/inputs/suffix_array/chr22_small.dna")
 
@@ -22,7 +22,7 @@ defmodule Utils.Benchmark.Drivers.SuffixArray do
 
     Benchee.run(
       impl_map,
-      time: 60,
+      time: time,
       formatters: [
         {Benchee.Formatters.CSV, file: "output_suffix_array.csv"}
       ]
